@@ -1,7 +1,10 @@
 ## Self-Supervised Exploration via Disagreement ##
-
-VirtualEnv: disagreement
-Activate with: source disagreement/bin/activate
+Build Virtual Env with:
+    virtualenv disagreement --python=python3.6
+VirtualEnv:
+    disagreement
+Activate with:
+    source disagreement/bin/activate
 
 
 
@@ -18,4 +21,5 @@ Activate with: source disagreement/bin/activate
 [Deepak Pathak*](https://people.eecs.berkeley.edu/~pathak/), [Dhiraj Gandhi*](http://www.cs.cmu.edu/~dgandhi/), [Abhinav Gupta](http://www.cs.cmu.edu/~abhinavg/)<br/>
 (&#42; equal contribution)
 
+Nice for the issue section:
 [Large-Scale Study of Curiosity-driven Learning, ICLR 2019](https://github.com/openai/large-scale-curiosity).
