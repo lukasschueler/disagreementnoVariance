@@ -8,6 +8,9 @@ import os.path as osp
 from functools import partial
 
 import gym
+from gym import register, envs
+from gym_minigrid import wrappers
+#from wrappers import RGBImgObsWrapper, RGBImgPartialObsWrapper
 import tensorflow as tf
 from baselines import logger
 from baselines.bench import Monitor
@@ -24,6 +27,8 @@ from wrappers import MontezumaInfoWrapper, make_mario_env, \
     make_unity_maze, StickyActionEnv
 
 import datetime
+
+
 
 
 def start_experiment(**args):
@@ -163,6 +168,10 @@ def make_env_all_params(rank, add_monitor, args):
             ext_coeff=args["ext_coeff"], recordUnityVid=args['recordUnityVid'],
             expID=args["unityExpID"], startLoc=args["startLoc"], door=args["door"],
             tv=args["tv"], testenv=args["testenv"], logdir=logger.get_dir())
+    elif args["env_kind"] == 'custom':
+        env = gym.make(args['env'])
+        env = wrappers.ImgObsWrapper(wrappers.RGBImgPartialObsWrapper(env))
+
 
     if add_monitor:
         env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
@@ -188,10 +197,10 @@ def get_experiment_environment(**args):
 
 
 def add_environments_params(parser):
-    parser.add_argument('--env', help='environment ID', default='BreakoutNoFrameskip-v4',
+    parser.add_argument('--env', help='environment ID', default='MiniGrid-Empty-5x5-v0',
                         type=str)
     parser.add_argument('--max-episode-steps', help='maximum number of timesteps for episode', default=4500, type=int)
-    parser.add_argument('--env_kind', type=str, default="atari")
+    parser.add_argument('--env_kind', type=str, default="custom")
     parser.add_argument('--noop_max', type=int, default=30)
     parser.add_argument('--stickyAtari', action='store_true', default=True)
 
@@ -227,7 +236,8 @@ def add_unity_params(parser):
 
 if __name__ == '__main__':
     import argparse
-
+    import os
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     add_environments_params(parser)
     add_unity_params(parser)
@@ -249,5 +259,9 @@ if __name__ == '__main__':
 
 
     args = parser.parse_args()
+    register(
+        id='MiniGrid-Empty-5x5-v0',
+        entry_point='gym_minigrid.envs:EmptyEnv5x5'
+    )
 
     start_experiment(**args.__dict__)
