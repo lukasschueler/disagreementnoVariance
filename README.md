@@ -1,6 +1,12 @@
 ## Self-Supervised Exploration via Disagreement ##
 
-To use more than one gpu/machine, use MPI (e.g. `mpiexec -n 8 python run.py` should use 1024 parallel environments to collect experience instead of the default 128 on an 8 gpu machine).
+VirtualEnv: disagreement
+Activate with: source disagreement/bin/activate
+
+
+
+
+
 
 ### Other helpful pointers
 - [Paper](https://pathak22.github.io/exploration-by-disagreement/resources/icml19.pdf)
