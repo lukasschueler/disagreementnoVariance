@@ -40,7 +40,7 @@ pytz==2021.1
 pyzmq==22.1.0
 scipy==1.5.4
 six==1.16.0
-stable-baselines==2.10.2
+#stable-baselines==2.10.2
 tensorboard==1.10.0
 tensorflow==1.10.0
 termcolor==1.1.0
