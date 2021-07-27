@@ -8,9 +8,8 @@ import os.path as osp
 from functools import partial
 
 import gym
-from gym import register, envs
-from gym_minigrid import wrappers
-#from wrappers import RGBImgObsWrapper, RGBImgPartialObsWrapper
+import gym_minigrid
+from gym_minigrid.wrappers import ImgObsWrapper, RGBImgObsWrapper, RGBImgPartialObsWrapper
 import tensorflow as tf
 from baselines import logger
 from baselines.bench import Monitor
@@ -170,7 +169,7 @@ def make_env_all_params(rank, add_monitor, args):
             tv=args["tv"], testenv=args["testenv"], logdir=logger.get_dir())
     elif args["env_kind"] == 'custom':
         env = gym.make(args['env'])
-        env = wrappers.ImgObsWrapper(wrappers.RGBImgPartialObsWrapper(env))
+        env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
 
 
     if add_monitor:
@@ -259,9 +258,5 @@ if __name__ == '__main__':
 
 
     args = parser.parse_args()
-    register(
-        id='MiniGrid-Empty-5x5-v0',
-        entry_point='gym_minigrid.envs:EmptyEnv5x5'
-    )
 
     start_experiment(**args.__dict__)
