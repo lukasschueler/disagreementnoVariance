@@ -121,7 +121,7 @@ class Trainer(object):
         self.agent.to_report['feat_var'] = tf.reduce_mean(tf.nn.moments(self.feature_extractor.features, [0, 1])[1])
 
     def _set_env_vars(self):
-        env = self.make_env(0, add_monitor=False)
+        env = self.make_env(0, add_monitor=True)
         self.ob_space, self.ac_space = env.observation_space, env.action_space
         self.ob_mean, self.ob_std = random_agent_ob_mean_std(env)
         if self.hps["env_kind"] == "unity":
@@ -171,7 +171,8 @@ def make_env_all_params(rank, add_monitor, args):
             tv=args["tv"], testenv=args["testenv"], logdir=logger.get_dir())
         
     elif args["env_kind"] == 'custom':
-        env = Monitor(gym.make(args['env']), './video', force=True)
+        env = gym.make(args['env'])
+        env = Monitor(env, './video', force=True)
         env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
 
 
