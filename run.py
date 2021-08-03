@@ -172,7 +172,7 @@ def make_env_all_params(rank, add_monitor, args):
         
     elif args["env_kind"] == 'custom':
         env = gym.make(args['env'])
-        env = Monitor(env, './video', force=True)
+        env = Monitor(env, './video')
         env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
 
 
