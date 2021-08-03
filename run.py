@@ -121,7 +121,7 @@ class Trainer(object):
         self.agent.to_report['feat_var'] = tf.reduce_mean(tf.nn.moments(self.feature_extractor.features, [0, 1])[1])
 
     def _set_env_vars(self):
-        env = self.make_env(0, add_monitor=True)
+        env = self.make_env(0, add_monitor=False)
         self.ob_space, self.ac_space = env.observation_space, env.action_space
         self.ob_mean, self.ob_std = random_agent_ob_mean_std(env)
         if self.hps["env_kind"] == "unity":
