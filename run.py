@@ -8,6 +8,8 @@ import os.path as osp
 from functools import partial
 
 import gym
+from gym.wrappers import Monitor
+
 import gym_minigrid
 from gym_minigrid.wrappers import ImgObsWrapper, RGBImgObsWrapper, RGBImgPartialObsWrapper
 import tensorflow as tf
@@ -167,8 +169,9 @@ def make_env_all_params(rank, add_monitor, args):
             ext_coeff=args["ext_coeff"], recordUnityVid=args['recordUnityVid'],
             expID=args["unityExpID"], startLoc=args["startLoc"], door=args["door"],
             tv=args["tv"], testenv=args["testenv"], logdir=logger.get_dir())
+        
     elif args["env_kind"] == 'custom':
-        env = gym.make(args['env'])
+        env = Monitor(gym.make(args['env']), './video', force=True)
         env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
 
 
