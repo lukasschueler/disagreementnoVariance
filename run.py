@@ -173,7 +173,7 @@ def make_env_all_params(rank, add_monitor, args):
         
     elif args["env_kind"] == 'custom':
         env = gym.make(args['env'])
-        env = Monitor(env, './video')
+        env = Monitor(env, './video', video_callable = lambda episode_id: episode_id%500,  force = True)
         env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
 
 
@@ -201,7 +201,7 @@ def get_experiment_environment(**args):
 
 
 def add_environments_params(parser):
-    parser.add_argument('--env', help='environment ID', default='MiniGrid-DoorKey-5x5-v0',
+    parser.add_argument('--env', help='environment ID', default='MiniGrid-DoorKey-8x8-v0',
                         type=str)
     parser.add_argument('--max-episode-steps', help='maximum number of timesteps for episode', default=4500, type=int)
     parser.add_argument('--env_kind', type=str, default="custom")
