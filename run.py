@@ -8,14 +8,14 @@ import os.path as osp
 from functools import partial
 
 import gym
-from gym.wrappers import Monitor
+from gym.wrappers import Monitor as VideoMonitor
 
 import gym_minigrid
 from gym_minigrid.wrappers import ImgObsWrapper, RGBImgObsWrapper, RGBImgPartialObsWrapper
 
 import tensorflow as tf
 from baselines import logger
-#from baselines.bench import Monitor
+from baselines.bench import Monitor as EnvMonitor
 from baselines.common.atari_wrappers import NoopResetEnv, FrameStack
 from mpi4py import MPI
 
@@ -173,13 +173,19 @@ def make_env_all_params(rank, add_monitor, args):
         
     elif args["env_kind"] == 'custom':
         env = gym.make(args['env'])
-        # env = Monitor(env, './video', video_callable = lambda episode_id: episode_id%500,  force = True)
+        
+        time = datetime.datetime.now().strftime("-%Y-%m-%d-%H-%M-%S-%f")
+        from pathlib import Path
+        dataPath = "./disagreeData/ENV" + time
+        Path(dataPath).mkdir(parents=True, exist_ok=True)
+        env = EnvMonitor(env, dataPath)
+        
+        env = VideoMonitor(env, "./disagreeVideo/VID" + time , video_callable = lambda episode_id: episode_id%1000000)
         env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
-
-
-    if add_monitor:
-        env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
-    return env
+    
+    # if add_monitor:
+    #     env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
+    # return env
 
 
 def get_experiment_environment(**args):
