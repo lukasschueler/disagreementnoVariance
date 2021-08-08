@@ -185,7 +185,7 @@ def make_env_all_params(rank, add_monitor, args):
     
     # if add_monitor:
     #     env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
-    # return env
+    return env
 
 
 def get_experiment_environment(**args):
