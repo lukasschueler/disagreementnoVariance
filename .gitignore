@@ -117,3 +117,5 @@ wrapper.sh
 #Ignore virtualEnv
 /disagreement
 video
+disagreeData
+disagreeVideo
