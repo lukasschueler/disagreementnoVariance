@@ -29,6 +29,9 @@ from wrappers import MontezumaInfoWrapper, make_mario_env, \
     make_unity_maze, StickyActionEnv
 
 import datetime
+import wandb
+wandb.init(project="exploration-by-disagreement")
+
 
 
 

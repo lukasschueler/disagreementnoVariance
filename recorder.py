@@ -3,6 +3,7 @@ import pickle
 
 from baselines import logger
 from mpi4py import MPI
+import wandb
 
 
 class Recorder(object):
@@ -32,6 +33,9 @@ class Recorder(object):
 
                 self.int_rews[in_index].append(int_rew[out_index])
                 self.ext_rews[in_index].append(ext_rew[out_index])
+                
+                wandb.log({'intrinsic_reward': int_rews, 'extrinsic_reward': ext_rews})
+
 
                 if news[out_index]:
                     #self.ep_infos[in_index]['ret'] = infos[out_index]['episode']['r']
