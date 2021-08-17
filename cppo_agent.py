@@ -225,7 +225,7 @@ class PpoOptimizer(object):
         info["total_secs"] = tnow - self.t_start
         info['tps'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
         self.t_last_update = tnow
-
+        wandb.log(info)
         return info
 
     def step(self):
