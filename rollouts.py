@@ -71,6 +71,10 @@ class Rollout(object):
 
             # cal reward by mean along second dimension .. [n_env, n_step, feature_size] --> [n_env, n_step]
             var_rew = np.mean(var_output, axis=-1)
+            wandb.log({
+                "Internal Reward": var_rew,
+                "External Reward": self.buf_ext_rews,
+            })
         else:
             for dynamics in self.dynamics_list:
                 int_rew.append(dynamics.calculate_loss(ob=self.buf_obs,
@@ -80,7 +84,6 @@ class Rollout(object):
             # calculate the variance of the rew
             var_rew = np.var(int_rew, axis=0)
             wandb.log({
-                        "Test Log": 35,
                         "Internal Reward": var_rew,
                         "External Reward": self.buf_ext_rews,
                     })
