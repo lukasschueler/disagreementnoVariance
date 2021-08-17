@@ -30,6 +30,7 @@ from wrappers import MontezumaInfoWrapper, make_mario_env, \
 
 import datetime
 import wandb
+
 wandb.init(project="exploration-by-disagreement")
 
 

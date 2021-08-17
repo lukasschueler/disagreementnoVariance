@@ -4,7 +4,7 @@ import numpy as np
 from mpi4py import MPI
 
 from recorder import Recorder
-
+import wandb
 
 class Rollout(object):
     def __init__(self, ob_space, ac_space, nenvs, nsteps_per_seg, nsegs_per_env, nlumps, envs, policy,
@@ -79,6 +79,10 @@ class Rollout(object):
 
             # calculate the variance of the rew
             var_rew = np.var(int_rew, axis=0)
+            wandb.log({
+                        "Internal Reward": var_rew,
+                        "External Reward": self.buf_ext_rews,
+                    })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
 
