@@ -34,7 +34,7 @@ class Recorder(object):
                 self.int_rews[in_index].append(int_rew[out_index])
                 self.ext_rews[in_index].append(ext_rew[out_index])
                 
-                wandb.log({'intrinsic_reward': self.int_rews, 'extrinsic_reward': self.ext_rews})
+                wandb.log({'intrinsic_reward': self.int_rew[out_index], 'extrinsic_reward': self.ext_rew[out_index]})
 
 
                 if news[out_index]:
