@@ -80,6 +80,7 @@ class Rollout(object):
             # calculate the variance of the rew
             var_rew = np.var(int_rew, axis=0)
             wandb.log({
+                        "Test Log": 35,
                         "Internal Reward": var_rew,
                         "External Reward": self.buf_ext_rews,
                     })
