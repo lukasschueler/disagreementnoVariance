@@ -14,7 +14,7 @@ from mpi_utils import MpiAdamOptimizer
 from rollouts import Rollout
 from utils import bcast_tf_vars_from_root, get_mean_and_std
 from vec_env import ShmemVecEnv as VecEnv
-
+import wandb
 getsess = tf.get_default_session
 
 
