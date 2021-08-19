@@ -31,7 +31,7 @@ from wrappers import MontezumaInfoWrapper, make_mario_env, \
 import datetime
 import wandb
 
-wandb.init(project="exploration-by-disagreement", group = "Purely extrinsic")
+wandb.init(project="Thesis", group = "exploration_by_disagreement", entity = "lukischueler", name ="test")
 
 
 
@@ -268,6 +268,7 @@ if __name__ == '__main__':
     parser.add_argument('--layernorm', type=int, default=0)
     parser.add_argument('--feat_learning', type=str, default="none",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
+    
     parser.add_argument('--num_dynamics', type=int, default=5)
     parser.add_argument('--var_output', action='store_true', default=True)
 
