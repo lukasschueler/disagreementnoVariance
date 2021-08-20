@@ -219,7 +219,9 @@ class PpoOptimizer(object):
         self.n_updates += 1
         info["Number of Updates"] = self.n_updates
         info.update({dn: (np.mean(dvs) if len(dvs) > 0 else 0) for (dn, dvs) in self.rollout.statlists.items()})
-        info.update(self.rollout.stats)
+        
+        # info.update(self.rollout.stats)
+
         if "states_visited" in info:
             info.pop("states_visited")
         tnow = time.time()
