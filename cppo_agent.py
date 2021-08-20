@@ -66,6 +66,7 @@ class PpoOptimizer(object):
             pg_losses2 = negadv * tf.clip_by_value(ratio, 1.0 - self.ph_cliprange, 1.0 + self.ph_cliprange)
             pg_loss_surr = tf.maximum(pg_losses1, pg_losses2)
             pg_loss = tf.reduce_mean(pg_loss_surr)
+            
             ent_loss = (- ent_coef) * entropy
             approxkl = .5 * tf.reduce_mean(tf.square(neglogpac - self.ph_oldnlp))
             clipfrac = tf.reduce_mean(tf.to_float(tf.abs(pg_losses2 - pg_loss_surr) > 1e-6))
@@ -214,6 +215,7 @@ class PpoOptimizer(object):
         mblossvals = [mblossvals[0]]
         info.update(zip(['opt_' + ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
         info["rank"] = MPI.COMM_WORLD.Get_rank()
+        info["Number of processes"] = MPI.COMM_WORLD.Get_size()
         self.n_updates += 1
         info["n_updates"] = self.n_updates
         info.update({dn: (np.mean(dvs) if len(dvs) > 0 else 0) for (dn, dvs) in self.rollout.statlists.items()})

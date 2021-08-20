@@ -31,9 +31,6 @@ from wrappers import MontezumaInfoWrapper, make_mario_env, \
 import datetime
 import wandb
 
-wandb.init(project="Thesis", group = "exploration_by_disagreement", entity = "lukischueler", name ="test")
-
-
 
 
 
@@ -274,5 +271,8 @@ if __name__ == '__main__':
 
 
     args = parser.parse_args()
+    
+    wandb.init(project="thesis", group = "exploration_by_disagreement", entity = "lukischueler", name ="test", config = args)
+    
 
     start_experiment(**args.__dict__)

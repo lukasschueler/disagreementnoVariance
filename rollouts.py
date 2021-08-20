@@ -73,7 +73,6 @@ class Rollout(object):
             var_rew = np.mean(var_output, axis=-1)
             wandb.log({
                 "Internal Reward": var_rew,
-                "External Reward": self.buf_ext_rews,
             })
         else:
             for dynamics in self.dynamics_list:
@@ -83,9 +82,9 @@ class Rollout(object):
 
             # calculate the variance of the rew
             var_rew = np.var(int_rew, axis=0)
+            # TODO: Check whether output with this axis-aparamter makes sense
             wandb.log({
-                        "Internal Reward": var_rew,
-                        "External Reward": self.buf_ext_rews,
+                        "Internal Reward": np.mean(var_rew, axis=-1),
                     })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
@@ -147,6 +146,7 @@ class Rollout(object):
                 if t == self.nsteps - 1:
                     self.buf_new_last[sli] = nextnews
                     self.buf_ext_rews[sli, t] = ext_rews
+                    wandb.log({"External reward:", np.mean(ext_rews)})
                     _, self.buf_vpred_last[sli], _ = self.policy.get_ac_value_nlp(nextobs)
                     # dyn_logp = self.policy.call_reward(self.prev_feat[l], last_pol_feat, prev_acs)
                     # dyn_logp = dyn_logp.reshape(-1, )
