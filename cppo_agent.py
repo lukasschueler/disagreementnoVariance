@@ -227,7 +227,7 @@ class PpoOptimizer(object):
         info['Timesteps/Sec'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
         info["Time lapsed"] = tnow - self.t_start
         self.t_last_update = tnow
-        wandb.log(info)
+        # wandb.log(info)
         return info
 
     def step(self):
