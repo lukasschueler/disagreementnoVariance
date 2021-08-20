@@ -72,7 +72,7 @@ class PpoOptimizer(object):
             clipfrac = tf.reduce_mean(tf.to_float(tf.abs(pg_losses2 - pg_loss_surr) > 1e-6))
 
             self.total_loss = pg_loss + ent_loss + vf_loss
-            self.to_report = {'tot': self.total_loss, 'pg': pg_loss, 'vf': vf_loss, 'ent': entropy,
+            self.to_report = {'Total Loss': self.total_loss, 'Policy Gradient Loss': pg_loss, 'Value Function Loss': vf_loss, 'Entropy': entropy,
                               'approxkl': approxkl, 'clipfrac': clipfrac}
 
     def start_interaction(self, env_fns, dynamics_list, nlump=2):
@@ -164,7 +164,7 @@ class PpoOptimizer(object):
             recent_best_ext_ret=self.rollout.current_max if self.rollout.current_max is not None else 0,
         )
         if self.rollout.best_ext_ret is not None:
-            info['best_ext_ret'] = self.rollout.best_ext_ret
+            info['Best extrinsic reward'] = self.rollout.best_ext_ret
 
         # store images for debugging
         # from PIL import Image
@@ -214,18 +214,18 @@ class PpoOptimizer(object):
 
         mblossvals = [mblossvals[0]]
         info.update(zip(['opt_' + ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
-        info["rank"] = MPI.COMM_WORLD.Get_rank()
-        info["Number of processes"] = MPI.COMM_WORLD.Get_size()
+        info["Rank of Process"] = MPI.COMM_WORLD.Get_rank()
+        info["Number of Processes"] = MPI.COMM_WORLD.Get_size()
         self.n_updates += 1
-        info["n_updates"] = self.n_updates
+        info["Number of Updates"] = self.n_updates
         info.update({dn: (np.mean(dvs) if len(dvs) > 0 else 0) for (dn, dvs) in self.rollout.statlists.items()})
         info.update(self.rollout.stats)
         if "states_visited" in info:
             info.pop("states_visited")
         tnow = time.time()
-        info["ups"] = 1. / (tnow - self.t_last_update)
-        info["total_secs"] = tnow - self.t_start
-        info['tps'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
+        info["Updates/Sec"] = 1. / (tnow - self.t_last_update)
+        info['Timesteps/Sec'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
+        info["Time lapsed"] = tnow - self.t_start
         self.t_last_update = tnow
         wandb.log(info)
         return info

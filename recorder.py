@@ -33,12 +33,6 @@ class Recorder(object):
 
                 self.int_rews[in_index].append(int_rew[out_index])
                 self.ext_rews[in_index].append(ext_rew[out_index])
-                
-                #MIGHT BE LOGGING AT WRONG POINT
-                # wandb.log({'intrinsic_reward': int_rew[out_index], 'extrinsic_reward': ext_rew[out_index]})
-                # print("INTIRNSIC REWARD: ", int_rew[out_index])
-                # print("INTIRNSIC REWARD Type: ", type(int_rew[out_index]))
-
 
                 if news[out_index]:
                     #self.ep_infos[in_index]['ret'] = infos[out_index]['episode']['r']
