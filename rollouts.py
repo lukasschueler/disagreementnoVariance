@@ -146,7 +146,7 @@ class Rollout(object):
                 if t == self.nsteps - 1:
                     self.buf_new_last[sli] = nextnews
                     self.buf_ext_rews[sli, t] = ext_rews
-                    wandb.log({"External reward:", np.mean(ext_rews)})
+                    wandb.log({"External reward": np.mean(ext_rews)})
                     _, self.buf_vpred_last[sli], _ = self.policy.get_ac_value_nlp(nextobs)
                     # dyn_logp = self.policy.call_reward(self.prev_feat[l], last_pol_feat, prev_acs)
                     # dyn_logp = dyn_logp.reshape(-1, )
