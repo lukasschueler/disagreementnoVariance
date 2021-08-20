@@ -213,7 +213,7 @@ class PpoOptimizer(object):
                 mblossvals.append(getsess().run(self._losses + (self._train,), fd)[:-1])
 
         mblossvals = [mblossvals[0]]
-        info.update(zip(['opt_' + ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
+        info.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
         info["Rank of Process"] = MPI.COMM_WORLD.Get_rank()
         info["Number of Processes"] = MPI.COMM_WORLD.Get_size()
         self.n_updates += 1
