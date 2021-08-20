@@ -163,9 +163,9 @@ class Rollout(object):
             keys_ = all_ep_infos[0].keys()
             all_ep_infos = {k: [i[k] for i in all_ep_infos] for k in keys_}
 
-            self.statlists['eprew'].extend(all_ep_infos['r'])
+            self.statlists['Extrinsic Rewards in new Batch'].extend(all_ep_infos['r'])
             self.stats['eprew_recent'] = np.mean(all_ep_infos['r'])
-            self.statlists['eplen'].extend(all_ep_infos['l'])
+            self.statlists['Length of Episode'].extend(all_ep_infos['l'])
             self.stats['epcount'] += len(all_ep_infos['l'])
             self.stats['tcount'] += sum(all_ep_infos['l'])
             

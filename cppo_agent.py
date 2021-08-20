@@ -164,7 +164,7 @@ class PpoOptimizer(object):
             recent_best_ext_ret=self.rollout.current_max if self.rollout.current_max is not None else 0,
         )
         if self.rollout.best_ext_ret is not None:
-            info['Best extrinsic reward'] = self.rollout.best_ext_ret
+            info['Recent Best Reward'] = self.rollout.best_ext_ret
 
         # store images for debugging
         # from PIL import Image
