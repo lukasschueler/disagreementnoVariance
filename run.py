@@ -272,7 +272,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "exploration_by_disagreement", entity = "lukischueler", name ="test", config = args)
+    wandb.init(project="thesis", group = "exploration_by_disagreement", entity = "lukischueler", name ="test2", config = args)
     
 
     start_experiment(**args.__dict__)

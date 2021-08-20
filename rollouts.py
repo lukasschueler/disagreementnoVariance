@@ -70,7 +70,7 @@ class Rollout(object):
             var_output = np.var(net_output, axis=0)
 
             # cal reward by mean along second dimension .. [n_env, n_step, feature_size] --> [n_env, n_step]
-            var_rew = np.mean(var_output, axis=-1)
+            var_rew = np.mean(var_output)
             wandb.log({
                 "Intrinsic Reward": var_rew,
             })
@@ -84,7 +84,7 @@ class Rollout(object):
             var_rew = np.var(int_rew, axis=0)
             # TODO: Check whether output with this axis-aparamter makes sense
             wandb.log({
-                "Intrinsic Reward": np.mean(var_rew, axis=-1),
+                "Intrinsic Reward": np.mean(var_rew),
                 })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
@@ -170,7 +170,7 @@ class Rollout(object):
             self.stats['tcount'] += sum(all_ep_infos['l'])
             
             wandb.log({
-                "Number of Episodes": self.statlists['epcount'],
+                "Number of Episodes": self.stats['epcount'],
                 "Extrinsic Reward (Whole Buffer?)": np.mean(all_ep_infos['r']),
                 "Number of Timesteps": self.stats['tcount'],
             })
