@@ -213,6 +213,20 @@ class PpoOptimizer(object):
                 mblossvals.append(getsess().run(self._losses + (self._train,), fd)[:-1])
 
         mblossvals = [mblossvals[0]]
+        
+        info.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
+        
+        info["Rank of Process"] = MPI.COMM_WORLD.Get_rank()
+        info["Number of Processes"] = MPI.COMM_WORLD.Get_size()
+        self.n_updates += 1
+        info["Number of Updates"] = self.n_updates
+        info.update({dn: (np.mean(dvs) if len(dvs) > 0 else 0) for (dn, dvs) in self.rollout.statlists.items()})
+        
+        # info.update(self.rollout.stats)
+
+        if "states_visited" in info:
+            info.pop("states_visited")
+        tnow = time.time()
         myInfo = {
             "Mean of Advantages": self.buf_advs.mean(),
             "StD of Advantages": self.buf_advs.std(),
@@ -230,22 +244,10 @@ class PpoOptimizer(object):
             "Number of Processes": MPI.COMM_WORLD.Get_size(),
             "Number of Updates": self.n_updates
         }
-        
-        info.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
         myInfo.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
         wandb.log(myInfo)
         
-        info["Rank of Process"] = MPI.COMM_WORLD.Get_rank()
-        info["Number of Processes"] = MPI.COMM_WORLD.Get_size()
-        self.n_updates += 1
-        info["Number of Updates"] = self.n_updates
-        info.update({dn: (np.mean(dvs) if len(dvs) > 0 else 0) for (dn, dvs) in self.rollout.statlists.items()})
         
-        # info.update(self.rollout.stats)
-
-        if "states_visited" in info:
-            info.pop("states_visited")
-        tnow = time.time()
         info["Updates/Sec"] = 1. / (tnow - self.t_last_update)
         info['Timesteps/Sec'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
         info["Time lapsed"] = tnow - self.t_start
