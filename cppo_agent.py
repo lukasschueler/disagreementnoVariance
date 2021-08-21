@@ -164,7 +164,7 @@ class PpoOptimizer(object):
             recent_best_ext_ret=self.rollout.current_max if self.rollout.current_max is not None else 0,
         )
         if self.rollout.best_ext_ret is not None:
-            info['Recent Best Reward'] = self.rollout.best_ext_ret
+            info['recent_best_ext_ret'] = self.rollout.best_ext_ret
 
         # store images for debugging
         # from PIL import Image
@@ -213,7 +213,28 @@ class PpoOptimizer(object):
                 mblossvals.append(getsess().run(self._losses + (self._train,), fd)[:-1])
 
         mblossvals = [mblossvals[0]]
+        myInfo = {
+            "Mean of Advantages": self.buf_advs.mean(),
+            "StD of Advantages": self.buf_advs.std(),
+            "Mean of Returns": self.buf_rets.mean(),
+            "StD of Returns": self.buf_rets.std(),
+            "Mean of Value-Prediction":self.rollout.buf_vpreds.mean(),
+            "StD of Value-Prediction": self.rollout.buf_vpreds.std(),
+            "Explained Variance": explained_variance(self.rollout.buf_vpreds.ravel(), self.buf_rets.ravel()),
+            "Mean of Rewards": np.mean(self.rollout.buf_rews),
+            "Recent Best Reward": self.rollout.current_max if self.rollout.current_max is not None else 0,
+            "Updates/Sec": 1. / (tnow - self.t_last_update),
+            'Timesteps/Sec': MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update),
+            "Time lapsed": tnow - self.t_start,
+            "Rank of Process": MPI.COMM_WORLD.Get_rank(),
+            "Number of Processes": MPI.COMM_WORLD.Get_size(),
+            "Number of Updates": self.n_updates
+        }
+        
         info.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
+        myInfo.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
+        wandb.log(myInfo)
+        
         info["Rank of Process"] = MPI.COMM_WORLD.Get_rank()
         info["Number of Processes"] = MPI.COMM_WORLD.Get_size()
         self.n_updates += 1
@@ -229,7 +250,9 @@ class PpoOptimizer(object):
         info['Timesteps/Sec'] = MPI.COMM_WORLD.Get_size() * self.rollout.nsteps * self.nenvs / (tnow - self.t_last_update)
         info["Time lapsed"] = tnow - self.t_start
         self.t_last_update = tnow
-        wandb.log(info)
+        
+        
+        
         return info
 
     def step(self):
