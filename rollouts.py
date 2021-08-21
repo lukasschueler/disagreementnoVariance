@@ -72,7 +72,7 @@ class Rollout(object):
             # cal reward by mean along second dimension .. [n_env, n_step, feature_size] --> [n_env, n_step]
             var_rew = np.mean(var_output)
             wandb.log({
-                "Intrinsic Reward": var_rew,
+                "Intrinsic Rewards": var_rew,
             })
         else:
             for dynamics in self.dynamics_list:
@@ -84,7 +84,7 @@ class Rollout(object):
             var_rew = np.var(int_rew, axis=0)
             # TODO: Check whether output with this axis-aparamter makes sense
             wandb.log({
-                "Intrinsic Reward": np.mean(var_rew),
+                "Intrinsic Rewards": np.mean(var_rew),
                 })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
@@ -146,7 +146,6 @@ class Rollout(object):
                 if t == self.nsteps - 1:
                     self.buf_new_last[sli] = nextnews
                     self.buf_ext_rews[sli, t] = ext_rews
-                    wandb.log({"Extrinsic Reward (Slice from Buffer)": np.mean(ext_rews)})
                     _, self.buf_vpred_last[sli], _ = self.policy.get_ac_value_nlp(nextobs)
                     # dyn_logp = self.policy.call_reward(self.prev_feat[l], last_pol_feat, prev_acs)
                     # dyn_logp = dyn_logp.reshape(-1, )
@@ -174,6 +173,8 @@ class Rollout(object):
                 "Extrinsic Reward (Whole Buffer?)": np.mean(all_ep_infos['r']),
                 "Number of Timesteps": self.stats['tcount'],
             })
+            for reward in all_ep_infos['r']:
+                wandb.log({"Extrinsic Reward (Each)": reward})
             
             if 'visited_rooms' in keys_:
                 # Montezuma specific logging.
