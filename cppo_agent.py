@@ -228,12 +228,12 @@ class PpoOptimizer(object):
             info.pop("states_visited")
         tnow = time.time()
         myInfo = {
-            "Mean of Advantages": self.buf_advs.mean(),
-            "StD of Advantages": self.buf_advs.std(),
-            "Mean of Returns": self.buf_rets.mean(),
-            "StD of Returns": self.buf_rets.std(),
-            "Mean of Value-Prediction":self.rollout.buf_vpreds.mean(),
-            "StD of Value-Prediction": self.rollout.buf_vpreds.std(),
+            "Mean of Advantages (Combined)": self.buf_advs.mean(),
+            "StD of Advantages (Combined)": self.buf_advs.std(),
+            "Mean of Returns (Combined)": self.buf_rets.mean(),
+            "StD of Returns (Combined)": self.buf_rets.std(),
+            "Mean of Value-Prediction (Extrinsic)":self.rollout.buf_vpreds.mean(),
+            "StD of Value-Prediction (Extrinsic)": self.rollout.buf_vpreds.std(),
             "Explained Variance (Extrinsic)": explained_variance(self.rollout.buf_vpreds.ravel(), self.buf_rets.ravel()),
             "Total Reward (Mean)": np.mean(self.rollout.buf_rews),
             "Recent Best Reward": self.rollout.current_max if self.rollout.current_max is not None else 0,
