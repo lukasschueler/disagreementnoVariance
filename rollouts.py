@@ -170,7 +170,6 @@ class Rollout(object):
             
             wandb.log({
                 "Number of Episodes": self.stats['epcount'],
-                "Episode Reward (Mean)": np.mean(all_ep_infos['r']),
                 "Number of Timesteps": self.stats['tcount'],
             })
             for reward in all_ep_infos['r']:
