@@ -112,8 +112,8 @@ class Trainer(object):
             dynamics_list=self.dynamics_list
         )
 
-        self.agent.to_report['aux'] = tf.reduce_mean(self.feature_extractor.loss)
-        self.agent.total_loss += self.agent.to_report['aux']
+        self.agent.to_report['auxloss'] = tf.reduce_mean(self.feature_extractor.loss)
+        self.agent.total_loss += self.agent.to_report['auxloss']
 
         self.agent.to_report['dyn_loss'] = tf.reduce_mean(self.dynamics_list[0].partial_loss)
         for i in range(1, num_dyna):
