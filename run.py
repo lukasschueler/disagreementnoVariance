@@ -266,7 +266,7 @@ if __name__ == '__main__':
     parser.add_argument('--feat_learning', type=str, default="none",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
     
-    parser.add_argument('--num_dynamics', type=int, default=1)
+    parser.add_argument('--num_dynamics', type=int, default=5)
     parser.add_argument('--var_output', action='store_true', default=True)
 
 
