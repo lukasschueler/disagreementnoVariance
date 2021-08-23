@@ -267,7 +267,7 @@ if __name__ == '__main__':
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
     
     parser.add_argument('--num_dynamics', type=int, default=1)
-    parser.add_argument('--var_output', action='store_true', default=True)
+    parser.add_argument('--var_output', action='store_true', default=False)
 
 
     args = parser.parse_args()

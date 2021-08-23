@@ -93,6 +93,9 @@ class Rollout(object):
             # TODO: Check whether output with this axis-parameter makes sense
             # var_rew = np.mean(int_rew, axis=0)
             # var_rew = np.mean(int_rew, axis=-1)
+            print("----------------------------SHAPE INT REW------------------------")
+            print(np.shape(int_rew))
+            sys.exit("REUCHT")
 
             wandb.log({
                 "Intrinsic Reward": np.mean(int_rew),
