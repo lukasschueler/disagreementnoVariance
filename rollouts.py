@@ -67,19 +67,13 @@ class Rollout(object):
                                                           acs=self.buf_acs))
 
 
-            print("----------------------------SHAPE INT REW------------------------")
-            print(np.shape(net_output))
-            sys.exit("REUCHT")
-
             # cal variance along first dimension .. [n_dyna, n_env, n_step, feature_size]
             # --> [n_env, n_step,feature_size]
             var_output = np.var(net_output, axis=0)
 
             # cal reward by mean along second dimension .. [n_env, n_step, feature_size] --> [n_env, n_step]
-            #ORIGINALE
             var_rew = np.mean(var_output, axis=-1)
-            # MINE  
-            # var_rew = np.mean(var_output)
+            
             wandb.log({
                 "Intrinsic Reward": np.mean(var_rew),
             })
@@ -93,12 +87,10 @@ class Rollout(object):
             # TODO: Check whether output with this axis-parameter makes sense
             # var_rew = np.mean(int_rew, axis=0)
             # var_rew = np.mean(int_rew, axis=-1)
-            print("----------------------------SHAPE INT REW------------------------")
-            print(np.shape(int_rew))
-            sys.exit("REUCHT")
+            var_rew = np.reshape(int_rew, (8,128))
 
             wandb.log({
-                "Intrinsic Reward": np.mean(int_rew),
+                "Intrinsic Reward": np.mean(var_rew),
             })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
