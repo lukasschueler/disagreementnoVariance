@@ -112,6 +112,8 @@ class Rollout(object):
                 epinfo.update(mzepinfo)
                 epinfo.update(retroepinfo)
                 if epinfo:
+                    print("--------------ENTERING EPINFO---------------")
+                    sys.exit("YESS")
                     if "n_states_visited" in info:
                         epinfo["n_states_visited"] = info["n_states_visited"]
                         epinfo["states_visited"] = info["states_visited"]
