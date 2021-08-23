@@ -84,11 +84,13 @@ class Rollout(object):
                                                        acs=self.buf_acs))
 
             # calculate the variance of the rew
-            # TODO: Check whether output with this axis-aparamter makes sense
-            var_rew = np.var(int_rew, axis=0)
+            # TODO: Check whether output with this axis-parameter makes sense
+            var_rew = np.mean(int_rew, axis=0)
+            var_rew = np.mean(var_rew, axis=-1)
+
             wandb.log({
                 "Intrinsic Reward": np.mean(int_rew),
-                })
+            })
 
         self.buf_rews[:] = self.reward_fun(int_rew=var_rew, ext_rew=self.buf_ext_rews)
 
