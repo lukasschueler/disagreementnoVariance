@@ -5,6 +5,7 @@ from mpi4py import MPI
 
 from recorder import Recorder
 import wandb
+import sys
 
 class Rollout(object):
     def __init__(self, ob_space, ac_space, nenvs, nsteps_per_seg, nsegs_per_env, nlumps, envs, policy,
@@ -86,7 +87,10 @@ class Rollout(object):
             # calculate the variance of the rew
             # TODO: Check whether output with this axis-parameter makes sense
             # var_rew = np.mean(int_rew, axis=0)
-            var_rew = np.mean(int_rew, axis=-1)
+            # var_rew = np.mean(int_rew, axis=-1)
+            print("----------------------------SHAPE INT REW------------------------")
+            print(np.shape(int_rew))
+            sys.exit("REUCHT")
 
             wandb.log({
                 "Intrinsic Reward": np.mean(int_rew),
