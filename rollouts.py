@@ -66,6 +66,11 @@ class Rollout(object):
                                                           last_ob=self.buf_obs_last,
                                                           acs=self.buf_acs))
 
+
+            print("----------------------------SHAPE INT REW------------------------")
+            print(np.shape(net_output))
+            sys.exit("REUCHT")
+
             # cal variance along first dimension .. [n_dyna, n_env, n_step, feature_size]
             # --> [n_env, n_step,feature_size]
             var_output = np.var(net_output, axis=0)
@@ -88,9 +93,6 @@ class Rollout(object):
             # TODO: Check whether output with this axis-parameter makes sense
             # var_rew = np.mean(int_rew, axis=0)
             # var_rew = np.mean(int_rew, axis=-1)
-            print("----------------------------SHAPE INT REW------------------------")
-            print(np.shape(int_rew))
-            sys.exit("REUCHT")
 
             wandb.log({
                 "Intrinsic Reward": np.mean(int_rew),
