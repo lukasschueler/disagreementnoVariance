@@ -75,7 +75,7 @@ class Rollout(object):
             # MINE  
             # var_rew = np.mean(var_output)
             wandb.log({
-                "Intri Reward": np.mean(var_rew),
+                "Intrinsic Reward": np.mean(var_rew),
             })
         else:
             for dynamics in self.dynamics_list:
