@@ -174,6 +174,7 @@ def make_env_all_params(rank, add_monitor, args):
         
     elif args["env_kind"] == 'custom':
         env = gym.make(args['env'])
+        tile_size = args["tile_size"]
         
         time = datetime.datetime.now().strftime("-%Y-%m-%d-%H-%M-%S-%f")
         from pathlib import Path
@@ -181,8 +182,8 @@ def make_env_all_params(rank, add_monitor, args):
         Path(dataPath).mkdir(parents=True, exist_ok=True)
         env = EnvMonitor(env, dataPath)
         
-        env = VideoMonitor(env, "./disagreeVideo/VID" + time , video_callable = lambda episode_id: episode_id%10 == 0)
-        env = ImgObsWrapper(RGBImgPartialObsWrapper(env))
+        env = VideoMonitor(env, "./disagreeVideo/VID" + time, video_callable = lambda episode_id: episode_id%10 == 0)
+        env = ImgObsWrapper(RGBImgPartialObsWrapper(env, tile_size= tile_size))
     
     # if add_monitor:
     #     env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
@@ -263,16 +264,18 @@ if __name__ == '__main__':
     parser.add_argument('--ext_coeff', type=float, default=1.)
     parser.add_argument('--int_coeff', type=float, default=1.)
     parser.add_argument('--layernorm', type=int, default=0)
-    parser.add_argument('--feat_learning', type=str, default="idf",
+    parser.add_argument('--feat_learning', type=str, default="vaesph",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
     
     parser.add_argument('--num_dynamics', type=int, default=1)
     parser.add_argument('--var_output', action='store_true', default=False)
+    parser.add_argument('--tile_size', type=int, default=12)
+
 
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "Exploration_by_Disagreement/", entity = "lukischueler", name ="Both rewards", config = args)
+    wandb.init(project="thesis", group = "Exploration_by_Disagreement/", entity = "lukischueler", name ="Feature Extractor: vaesph", config = args)
     # , monitor_gym = True)
     
 
