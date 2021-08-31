@@ -276,7 +276,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "Exploration_by_Disagreement", entity = "lukischueler", name ="Number threads: 16", config = args)
+    wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name ="Number threads: 16", config = args)
     # , monitor_gym = True)
     
 
