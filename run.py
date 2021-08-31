@@ -233,7 +233,7 @@ def add_optimization_params(parser):
 def add_rollout_params(parser):
     parser.add_argument('--nsteps_per_seg', type=int, default=128)
     parser.add_argument('--nsegs_per_env', type=int, default=1)
-    parser.add_argument('--envs_per_process', type=int, default=32)
+    parser.add_argument('--envs_per_process', type=int, default=8)
     parser.add_argument('--nlumps', type=int, default=1)
 
 
@@ -263,9 +263,9 @@ if __name__ == '__main__':
     parser.add_argument('--dyn_from_pixels', type=int, default=0)
     parser.add_argument('--use_news', type=int, default=0)
     parser.add_argument('--ext_coeff', type=float, default=1.)
-    parser.add_argument('--int_coeff', type=float, default=1.)
+    parser.add_argument('--int_coeff', type=float, default=0.)
     parser.add_argument('--layernorm', type=int, default=0)
-    parser.add_argument('--feat_learning', type=str, default="vaenonsph",
+    parser.add_argument('--feat_learning', type=str, default="idf",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
     
     parser.add_argument('--num_dynamics', type=int, default=1)
@@ -276,7 +276,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name ="Test extr", config = args)
+    wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name ="Extrinsic", config = args)
     # , monitor_gym = True)
     
 
