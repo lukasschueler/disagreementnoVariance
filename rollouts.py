@@ -87,7 +87,7 @@ class Rollout(object):
             # TODO: Check whether output with this axis-parameter makes sense
             # var_rew = np.mean(int_rew, axis=0)
             # var_rew = np.mean(int_rew, axis=-1)
-            var_rew = np.reshape(int_rew, (8,128))
+            var_rew = np.reshape(int_rew, (self.nenvs,128))
 
             wandb.log({
                 "Intrinsic Reward": np.mean(var_rew),
