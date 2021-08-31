@@ -104,13 +104,13 @@ class Dynamics(object):
 
 
 class UNet(Dynamics):
-    def __init__(self, auxiliary_task, predict_from_pixels, feat_dim=None, scope='pixel_dynamics'):
+    def __init__(self, auxiliary_task, predict_from_pixels, feat_dim=None, scope='pixel_dynamics', var_output = True):
         assert isinstance(auxiliary_task, JustPixels)
         assert not predict_from_pixels, "predict from pixels must be False, it's set up to predict from features that are normalized pixels."
         super(UNet, self).__init__(auxiliary_task=auxiliary_task,
                                    predict_from_pixels=predict_from_pixels,
                                    feat_dim=feat_dim,
-                                   scope=scope)
+                                   scope=scope, var_output = True)
 
     def get_features(self, x, reuse):
         raise NotImplementedError
@@ -137,3 +137,4 @@ class UNet(Dynamics):
             x = unflatten_first_dim(x, sh)
         self.prediction_pixels = x * self.ob_std + self.ob_mean
         return tf.reduce_mean((x - tf.stop_gradient(self.out_features)) ** 2, [2, 3, 4])
+ 
