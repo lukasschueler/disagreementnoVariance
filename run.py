@@ -183,8 +183,9 @@ def make_env_all_params(rank, add_monitor, args):
         env = EnvMonitor(env, dataPath)
         
         env = VideoMonitor(env, "./disagreeVideo/VID" + time, video_callable = lambda episode_id: episode_id%10 == 0)
-        env = ImgObsWrapper(RGBImgPartialObsWrapper(env, tile_size= tile_size))
-    
+        # Using this for the feature extractor testing
+        # env = ImgObsWrapper(RGBImgPartialObsWrapper(env, tile_size= tile_size))
+        env = ImgObsWrapper(RGBImgPartialObsWrapper(env))    
     # if add_monitor:
     #     env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
     return env
@@ -223,16 +224,16 @@ def add_optimization_params(parser):
     parser.add_argument('--nminibatches', type=int, default=8)
     parser.add_argument('--norm_adv', type=int, default=1)
     parser.add_argument('--norm_rew', type=int, default=1)
-    parser.add_argument('--lr', type=float, default=1e-4)
+    parser.add_argument('--lr', type=float, default=0.0001)
     parser.add_argument('--ent_coeff', type=float, default=0.001)
-    parser.add_argument('--nepochs', type=int, default=3)
-    parser.add_argument('--num_timesteps', type=int, default=10000000)
+    parser.add_argument('--nepochs', type=int, default=4)
+    parser.add_argument('--num_timesteps', type=int, default=1000)
 
 
 def add_rollout_params(parser):
     parser.add_argument('--nsteps_per_seg', type=int, default=128)
     parser.add_argument('--nsegs_per_env', type=int, default=1)
-    parser.add_argument('--envs_per_process', type=int, default=8)
+    parser.add_argument('--envs_per_process', type=int, default=16)
     parser.add_argument('--nlumps', type=int, default=1)
 
 
@@ -264,7 +265,7 @@ if __name__ == '__main__':
     parser.add_argument('--ext_coeff', type=float, default=1.)
     parser.add_argument('--int_coeff', type=float, default=1.)
     parser.add_argument('--layernorm', type=int, default=0)
-    parser.add_argument('--feat_learning', type=str, default="vaenonsph",
+    parser.add_argument('--feat_learning', type=str, default="idf",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
     
     parser.add_argument('--num_dynamics', type=int, default=1)
@@ -275,7 +276,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "Exploration_by_Disagreement", entity = "lukischueler", name ="Feature Extractor: vaenonsph", config = args)
+    wandb.init(project="thesis", group = "Exploration_by_Disagreement", entity = "lukischueler", name ="Number threads: 16", config = args)
     # , monitor_gym = True)
     
 
