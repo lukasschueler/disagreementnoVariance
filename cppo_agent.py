@@ -247,7 +247,7 @@ class PpoOptimizer(object):
             "Number of Updates": self.n_updates
         }
         myInfo.update(zip([ln for ln in self.loss_names], np.mean([mblossvals[0]], axis=0)))
-        wandb.log(myInfo, commit = True)
+        wandb.log(myInfo, step = self.rollout.frameCountLogging)
         
         
         info["Updates/Sec"] = 1. / (tnow - self.t_last_update)

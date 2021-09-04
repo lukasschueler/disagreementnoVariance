@@ -272,8 +272,8 @@ class Rollout(object):
                 "Intrinsic Reward": mean_intrinsic_reward,
                 "Episode Length" : mean_episode_length,
                 "Recent Best Reward": self.maxRewLogging,
-                "Frames": self.frameCountLogging + 1
-            }, commit = False)
+                "Frames": self.frameCountLogging * self.nenvs
+            }, step = self.frameCountLogging)
             
             self.frameCountLogging += 1
             
