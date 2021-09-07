@@ -112,14 +112,14 @@ class Trainer(object):
             dynamics_list=self.dynamics_list
         )
 
-        self.agent.to_report['auxloss'] = tf.reduce_mean(self.feature_extractor.loss)
-        self.agent.total_loss += self.agent.to_report['auxloss']
+        self.agent.to_report['Feature Extractor Loss'] = tf.reduce_mean(self.feature_extractor.loss)
+        self.agent.total_loss += self.agent.to_report['Feature Extractor Loss']
 
-        self.agent.to_report['dyn_loss'] = tf.reduce_mean(self.dynamics_list[0].partial_loss)
+        self.agent.to_report['State Predictor Loss'] = tf.reduce_mean(self.dynamics_list[0].partial_loss)
         for i in range(1, num_dyna):
-            self.agent.to_report['dyn_loss'] += tf.reduce_mean(self.dynamics_list[i].partial_loss)
+            self.agent.to_report['State Predictor Loss'] += tf.reduce_mean(self.dynamics_list[i].partial_loss)
 
-        self.agent.total_loss += self.agent.to_report['dyn_loss']
+        self.agent.total_loss += self.agent.to_report['State Predictor Loss']
         self.agent.to_report['feat_var'] = tf.reduce_mean(tf.nn.moments(self.feature_extractor.features, [0, 1])[1])
 
     def _set_env_vars(self):
