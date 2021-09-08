@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "/home/lukas/Documents/thesis/disagreementnoVariance/run.py",
+            "program": "/home/luki/Documents/thesis/code/disagreementnoVariance/run.py",
             "console": "integratedTerminal"
         }
     ]
