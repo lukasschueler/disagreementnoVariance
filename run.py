@@ -268,12 +268,12 @@ if __name__ == '__main__':
     
     parser.add_argument('--feat_learning', type=str, default="idf",
                         choices=["none", "idf", "vaesph", "vaenonsph", "pix2pix"])
-    parser.add_argument('--num_dynamics', type=int, default=5)
-    parser.add_argument('--var_output', action='store_true', default=True)
+    parser.add_argument('--num_dynamics', type=int, default=1)
+    parser.add_argument('--var_output', action='store_true', default=False)
     
     parser.add_argument('--exp_name', type=str, default='Just another test')
     parser.add_argument('--ext_coeff', type=float, default=1.)
-    parser.add_argument('--int_coeff', type=float, default=0.)
+    parser.add_argument('--int_coeff', type=float, default=1.)
     parser.add_argument('--tile_size', type=int, default=12) # 8 for default, 12 for feature extractor testing
     parser.add_argument('--record_when', type=int, default=400)
     
@@ -287,7 +287,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name = args.exp_name, config = args, monitor_gym = True)
+    wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name = args.exp_name, config = args)
+            #    , monitor_gym = True)
             #    , settings=wandb.Settings(start_method='fork'))
     
     
