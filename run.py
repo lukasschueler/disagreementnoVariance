@@ -292,7 +292,7 @@ if __name__ == '__main__':
 
     
     # Short runs  
-    parser.add_argument('--num_timesteps', type=int, default=1000064)
+    parser.add_argument('--num_timesteps', type=int, default=1000448)
     # Middle runs
     # parser.add_argument('--num_timesteps', type=int, default=2000000)
     # Long runs  
