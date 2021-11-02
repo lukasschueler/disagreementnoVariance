@@ -302,9 +302,7 @@ if __name__ == '__main__':
     wandb.init(project="thesis", group = "Exploration_by_Curiosity", entity = "lukischueler", name = args.exp_name, config = args)
             #    , monitor_gym = True)
             #    , settings=wandb.Settings(start_method='fork'))
-    
-    wandb.config.update({"architecture": "curiosity"})
-    
+        
     # Define the custom x axis metric
     # wandb.define_metric("Number of Episodes")
     wandb.define_metric("Frames seen")
