@@ -27,7 +27,7 @@ from dynamics import Dynamics, UNet
 from utils import random_agent_ob_mean_std
 from wrappers import MontezumaInfoWrapper, make_mario_env, \
     make_multi_pong, AddRandomStateToInfo, MaxAndSkipEnv, ProcessFrame84, ExtraTimeLimit, \
-    make_unity_maze, StickyActionEnv, StateCoverage
+    make_unity_maze, StickyActionEnv
 
 import datetime
 import wandb
@@ -195,7 +195,7 @@ def make_env_all_params(rank, add_monitor, args):
         if args["add_noise"]:
             env = MakeEnvDynamic(env)        
         if args["record_coverage"]:
-            env = stateCoverage(env, args["size"], args["record_when"])        
+            env = stateCoverage(env, args["size"], args["record_when"], rank)        
 
     # if add_monitor:
     #     env = Monitor(env, osp.join(logger.get_dir(), '%.2i' % rank))
